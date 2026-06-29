@@ -1,0 +1,3 @@
+# Force Nixpacks to build as a PHP application
+[providers]
+php = {}
