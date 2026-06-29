@@ -5,24 +5,33 @@ use PDO;
 use PDOException;
 
 class Database {
-    private static $host = "localhost";
-    private static $username = "root";
-    private static $password = "";
-    private static $dbname = "controlcostos_db";
+    private static $host = null;
+    private static $username = null;
+    private static $password = null;
+    private static $dbname = null;
+    private static $port = null;
     private static $pdo = null;
 
     public static function getConnection() {
         if (self::$pdo === null) {
+            // Intentar leer variables de entorno (para Railway) o usar valores por defecto (para XAMPP local)
+            self::$host = getenv('MYSQLHOST') ?: "localhost";
+            self::$username = getenv('MYSQLUSER') ?: "root";
+            self::$password = getenv('MYSQLPASSWORD') !== false ? getenv('MYSQLPASSWORD') : "";
+            self::$dbname = getenv('MYSQLDATABASE') ?: "controlcostos_db";
+            self::$port = getenv('MYSQLPORT') ?: "3306";
+
             try {
                 // Conectar inicialmente a MySQL sin seleccionar base de datos
-                $conn = new PDO("mysql:host=" . self::$host . ";charset=utf8", self::$username, self::$password);
+                $dsn = "mysql:host=" . self::$host . ";port=" . self::$port . ";charset=utf8";
+                $conn = new PDO($dsn, self::$username, self::$password);
                 $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
                 
                 // Crear base de datos
                 $conn->exec("CREATE DATABASE IF NOT EXISTS `" . self::$dbname . "` CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci");
                 
                 // Reconectar seleccionando la base de datos
-                self::$pdo = new PDO("mysql:host=" . self::$host . ";dbname=" . self::$dbname . ";charset=utf8", self::$username, self::$password);
+                self::$pdo = new PDO("mysql:host=" . self::$host . ";port=" . self::$port . ";dbname=" . self::$dbname . ";charset=utf8", self::$username, self::$password);
                 self::$pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
                 
                 // Crear tablas necesarias
