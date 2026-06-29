@@ -7,6 +7,15 @@ error_reporting(E_ALL);
 spl_autoload_register(function ($class) {
     // Reemplazar namespaces por barras de directorio
     $classPath = str_replace('\\', DIRECTORY_SEPARATOR, $class);
+    
+    // En Linux los nombres de carpetas son sensibles a mayúsculas.
+    // Convertimos la carpeta principal (ej: Controllers -> controllers) a minúsculas.
+    $parts = explode(DIRECTORY_SEPARATOR, $classPath);
+    if (count($parts) > 1) {
+        $parts[0] = strtolower($parts[0]);
+    }
+    $classPath = implode(DIRECTORY_SEPARATOR, $parts);
+
     $file = __DIR__ . DIRECTORY_SEPARATOR . $classPath . '.php';
     if (file_exists($file)) {
         require_once $file;
