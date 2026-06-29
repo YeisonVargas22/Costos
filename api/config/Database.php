@@ -14,20 +14,32 @@ class Database {
 
     public static function getConnection() {
         if (self::$pdo === null) {
-            // Intentar leer variables de entorno (para Railway) o usar valores por defecto (para XAMPP local)
-            self::$host = getenv('MYSQLHOST') ?: "localhost";
-            self::$username = getenv('MYSQLUSER') ?: "root";
-            self::$password = getenv('MYSQLPASSWORD') !== false ? getenv('MYSQLPASSWORD') : "";
-            self::$dbname = getenv('MYSQLDATABASE') ?: "controlcostos_db";
-            self::$port = getenv('MYSQLPORT') ?: "3306";
+            // Intentar leer variable de conexión directa de Railway (MYSQL_URL o DATABASE_URL)
+            $connectionUrl = getenv('MYSQL_URL') ?: getenv('DATABASE_URL');
+            
+            if ($connectionUrl) {
+                $dbParts = parse_url($connectionUrl);
+                self::$host = $dbParts['host'] ?? "localhost";
+                self::$port = $dbParts['port'] ?? "3306";
+                self::$username = $dbParts['user'] ?? "root";
+                self::$password = isset($dbParts['pass']) ? urldecode($dbParts['pass']) : "";
+                self::$dbname = isset($dbParts['path']) ? ltrim($dbParts['path'], '/') : "controlcostos_db";
+            } else {
+                // Caer en variables individuales o valores locales por defecto
+                self::$host = getenv('MYSQLHOST') ?: "localhost";
+                self::$username = getenv('MYSQLUSER') ?: "root";
+                self::$password = getenv('MYSQLPASSWORD') !== false ? getenv('MYSQLPASSWORD') : "";
+                self::$dbname = getenv('MYSQLDATABASE') ?: "controlcostos_db";
+                self::$port = getenv('MYSQLPORT') ?: "3306";
+            }
 
             try {
-                // Conectar inicialmente a MySQL sin seleccionar base de datos
+                // Conectar inicialmente a MySQL
                 $dsn = "mysql:host=" . self::$host . ";port=" . self::$port . ";charset=utf8";
                 $conn = new PDO($dsn, self::$username, self::$password);
                 $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
                 
-                // Crear base de datos
+                // Crear base de datos (por si no existe, aunque Railway suele dar una ya creada)
                 $conn->exec("CREATE DATABASE IF NOT EXISTS `" . self::$dbname . "` CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci");
                 
                 // Reconectar seleccionando la base de datos
