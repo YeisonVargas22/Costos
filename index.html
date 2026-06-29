@@ -1,0 +1,488 @@
+<!DOCTYPE html>
+<html lang="es" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ControlCostos AI - SaaS Inteligente Financiero</title>
+    <!-- Google Fonts (Inter), Bootstrap 5, FontAwesome & Chart.js -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link href="css/styles.css?v=10" rel="stylesheet">
+</head>
+<body>
+
+    <!-- CABECERA PRINCIPAL (ESTILO SAAS / STRIPE) -->
+    <header class="saas-header border-bottom">
+        <div class="container-fluid px-4 d-flex justify-content-between align-items-center py-3">
+            <div class="saas-logo d-flex align-items-center gap-2" onclick="navegarA('view-welcome')" style="cursor: pointer;">
+                <div class="logo-icon bg-primary text-white d-flex align-items-center justify-content-center" style="width: 38px; height: 38px; border-radius: 10px;">
+                    <i class="fa-solid fa-chart-line-up" style="font-size: 1.2rem;"></i>
+                </div>
+                <span class="fw-bold fs-5 logo-text">ControlCostos <span class="text-primary">AI</span></span>
+            </div>
+            
+            <!-- MENÚ DE NAVEGACIÓN SAAS -->
+            <nav class="saas-nav d-none d-md-flex gap-2">
+                <button class="nav-link-custom active" onclick="navegarA('view-welcome')" id="tab-view-welcome"><i class="fa-solid fa-house me-1"></i> Inicio</button>
+                <button class="nav-link-custom" onclick="navegarA('view-chat')" id="tab-view-chat"><i class="fa-solid fa-comments me-1"></i> Consultor IA</button>
+                <button class="nav-link-custom d-none" onclick="navegarA('view-results')" id="tab-view-results"><i class="fa-solid fa-square-poll-vertical me-1"></i> Resultados</button>
+                <button class="nav-link-custom d-none" onclick="navegarA('view-dashboard')" id="tab-view-dashboard"><i class="fa-solid fa-chart-pie me-1"></i> Dashboard</button>
+                <button class="nav-link-custom d-none" onclick="navegarA('view-history')" id="tab-view-history"><i class="fa-solid fa-list-check me-1"></i> Historial</button>
+            </nav>
+
+            <div class="d-flex align-items-center gap-3">
+                <!-- ACCESO ADMIN BOTÓN -->
+                <button class="btn btn-outline-primary btn-sm rounded-pill px-3" onclick="solicitarAccesoAdmin()" id="btn-admin-access">
+                    <i class="fa-solid fa-lock me-1"></i> Admin
+                </button>
+                <!-- INTERRUPTOR DE MODO CLARO / OSCURO -->
+                <button class="btn btn-theme-toggle" onclick="toggleTheme()" title="Cambiar Tema">
+                    <i class="fa-solid fa-moon" id="theme-icon"></i>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- ENVOLTORIO PRINCIPAL -->
+    <main class="app-main-wrapper container py-4">
+
+        <!-- 1. VISTA: BIENVENIDA -->
+        <section id="view-welcome" class="view-section">
+            <div class="welcome-hero text-center py-5 mx-auto" style="max-width: 650px;">
+                <div class="hero-icon mb-4 text-primary">
+                    <i class="fa-solid fa-brain-circuit" style="font-size: 5rem;"></i>
+                </div>
+                <h1 class="fw-bold display-4 mb-3 tracking-tight">Controla tus Costos con el Poder de la IA</h1>
+                <p class="lead text-secondary mb-5">El primer asesor financiero conversacional impulsado por Gemini. Describe tu proyecto, responde las preguntas paso a paso y obtén análisis completos en segundos.</p>
+                <div class="d-flex gap-3 justify-content-center flex-wrap">
+                    <button class="btn btn-primary btn-lg px-4 py-3 rounded-pill shadow-lg animate-pulse" onclick="iniciarCalculoIA()">
+                        <i class="fa-solid fa-robot me-2"></i> Calcular Costos con IA
+                    </button>
+                    <button class="btn btn-outline-secondary btn-lg px-4 py-3 rounded-pill" onclick="navegarA('view-dashboard')">
+                        <i class="fa-solid fa-chart-pie me-2"></i> Ver Estadísticas
+                    </button>
+                    <!-- Dropdown Probar Demo -->
+                    <div class="dropdown">
+                        <button class="btn btn-warning btn-lg px-4 py-3 rounded-pill dropdown-toggle" type="button" id="dropdownDemoWelcome" data-bs-toggle="dropdown" aria-expanded="false">
+                            <i class="fa-solid fa-flask me-2"></i> Probar Demo
+                        </button>
+                        <ul class="dropdown-menu shadow border-0 p-2" aria-labelledby="dropdownDemoWelcome" style="border-radius:12px;">
+                            <li><button class="dropdown-item py-2 px-3 rounded" onclick="activarModoDemo(1)"><i class="fa-solid fa-burger me-2 text-danger"></i>Paso a Paso (1 Producto)</button></li>
+                            <li><button class="dropdown-item py-2 px-3 rounded" onclick="activarModoDemo(2)"><i class="fa-solid fa-right-left me-2 text-success"></i>Comparativo (2 Productos)</button></li>
+                            <li><button class="dropdown-item py-2 px-3 rounded" onclick="activarModoDemo(3)"><i class="fa-solid fa-list me-2 text-primary"></i>Comparativo (3 Productos)</button></li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- SECCIÓN: ¿PARA QUÉ SIRVE? -->
+                <div class="row mt-5 pt-4 text-start g-4">
+                    <div class="col-12 text-center">
+                        <h4 class="fw-bold mb-2">🎯 ¿Qué puedes resolver con ControlCostos AI?</h4>
+                        <p class="text-muted">Nuestra herramienta te ayuda a tomar decisiones financieras acertadas y rápidas para tu negocio o emprendimiento.</p>
+                    </div>
+                    <div class="col-md-6 col-lg-3">
+                        <div class="card-beneficio-premium h-100 shadow-sm">
+                            <div class="icon-wrapper bg-primary-subtle text-primary">
+                                <i class="fa-solid fa-calculator"></i>
+                            </div>
+                            <h6 class="fw-bold">Calcular Costo Real</h6>
+                            <p class="text-muted mb-0" style="font-size: 0.85rem;">Conoce la suma exacta de tus insumos directos, mano de obra y costos indirectos fijos calculados de forma unitaria.</p>
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-lg-3">
+                        <div class="card-beneficio-premium h-100 shadow-sm">
+                            <div class="icon-wrapper bg-success-subtle text-success">
+                                <i class="fa-solid fa-tags"></i>
+                            </div>
+                            <h6 class="fw-bold">Fijar Precios Correctos</h6>
+                            <p class="text-muted mb-0" style="font-size: 0.85rem;">Establece precios de venta justos para ti y tu mercado asegurándote de cubrir el porcentaje de utilidad neta que deseas.</p>
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-lg-3">
+                        <div class="card-beneficio-premium h-100 shadow-sm">
+                            <div class="icon-wrapper bg-warning-subtle text-warning">
+                                <i class="fa-solid fa-scale-balanced"></i>
+                            </div>
+                            <h6 class="fw-bold">Punto de Equilibrio</h6>
+                            <p class="text-muted mb-0" style="font-size: 0.85rem;">Identifica cuántas unidades exactas necesitas vender para empezar a generar ganancias netas en tu negocio.</p>
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-lg-3">
+                        <div class="card-beneficio-premium h-100 shadow-sm">
+                            <div class="icon-wrapper bg-info-subtle text-info">
+                                <i class="fa-solid fa-chart-line"></i>
+                            </div>
+                            <h6 class="fw-bold">Proyectar Rentabilidad</h6>
+                            <p class="text-muted mb-0" style="font-size: 0.85rem;">Visualiza el Retorno de Inversión (ROI) mensual y obtén recomendaciones de negocio inteligentes de la IA.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- SECCIÓN: ¿CÓMO SE USA? -->
+                <div class="row mt-5 pt-4 text-start g-4">
+                    <div class="col-12 text-center mb-3">
+                        <h4 class="fw-bold mb-2">🚀 ¿Cómo funciona en 3 sencillos pasos?</h4>
+                        <p class="text-muted">Es un proceso 100% conversacional, guiado y sin necesidad de registros.</p>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="step-card-premium h-100 d-flex gap-3 align-items-start">
+                            <div class="badge-paso-premium">1</div>
+                            <div>
+                                <h6 class="fw-bold mb-1">Elige tu categoría</h6>
+                                <p class="text-muted mb-0" style="font-size: 0.85rem;">Selecciona tu rubro (restaurante, confección, carpintería, etc.) para que la IA entienda el contexto de tu negocio.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="step-card-premium h-100 d-flex gap-3 align-items-start">
+                            <div class="badge-paso-premium">2</div>
+                            <div>
+                                <h6 class="fw-bold mb-1">Chatea con el Consultor</h6>
+                                <p class="text-muted mb-0" style="font-size: 0.85rem;">Responde las preguntas paso a paso. La IA te pedirá nombres de productos, costos de materiales, mano de obra y ventas estimadas.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="step-card-premium h-100 d-flex gap-3 align-items-start">
+                            <div class="badge-paso-premium">3</div>
+                            <div>
+                                <h6 class="fw-bold mb-1">¡Listo! Obtén tu Análisis</h6>
+                                <p class="text-muted mb-0" style="font-size: 0.85rem;">Al escribir "listo", se guardarán los datos en la base de datos y se generarán al instante tus KPIs, tablas y gráficos de barras o pastel.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 2. VISTA: CHAT CON GEMINI -->
+        <section id="view-chat" class="view-section d-none">
+            <div class="row justify-content-center">
+                <div class="col-lg-9">
+                    <div class="chat-saas-card">
+                        <!-- Cabecera del Chat -->
+                        <div class="chat-header-bar p-3 border-bottom d-flex justify-content-between align-items-center">
+                            <div class="d-flex align-items-center gap-2">
+                                <span class="pulse-indicator bg-success"></span>
+                                <h6 class="m-0 fw-bold">Consultor Financiero Gemini AI</h6>
+                            </div>
+                            <div class="d-flex gap-2">
+                                <!-- Dropdown Demo en Cabecera Chat -->
+                                <div class="dropdown">
+                                    <button class="btn btn-warning btn-sm rounded-pill px-3 dropdown-toggle" type="button" id="dropdownDemoChat" data-bs-toggle="dropdown" aria-expanded="false">
+                                        <i class="fa-solid fa-flask me-1"></i> Demo
+                                    </button>
+                                    <ul class="dropdown-menu dropdown-menu-end shadow border-0 p-2" aria-labelledby="dropdownDemoChat" style="border-radius:10px; font-size: 0.85rem;">
+                                        <li><button class="dropdown-item py-2" onclick="activarModoDemo(1)">1 Producto</button></li>
+                                        <li><button class="dropdown-item py-2" onclick="activarModoDemo(2)">2 Productos</button></li>
+                                        <li><button class="dropdown-item py-2" onclick="activarModoDemo(3)">3 Productos</button></li>
+                                    </ul>
+                                </div>
+                                <button class="btn btn-outline-danger btn-sm rounded-pill px-3" onclick="reiniciarChat()">
+                                    <i class="fa-solid fa-rotate-right me-1"></i> Reiniciar
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <!-- Caja de Mensajes -->
+                        <div id="chat-messages" class="chat-message-box p-4">
+                            <!-- Inyección dinámica -->
+                        </div>
+
+                        <!-- Opciones Rápidas -->
+                        <div id="quick-options" class="px-4 py-2 border-top d-flex gap-2 flex-wrap bg-light">
+                            <!-- Inyección de botones rápidos -->
+                        </div>
+
+                        <!-- Entrada de Mensajes -->
+                        <form id="chat-form" class="chat-input-bar p-3 border-top bg-white">
+                            <div class="input-group">
+                                <input type="text" id="chat-input" class="form-control border-end-0 py-3" placeholder="Responde al consultor o describe tu proyecto aquí..." required>
+                                <button type="submit" class="btn btn-primary px-4 border-start-0"><i class="fa-solid fa-paper-plane"></i></button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 3. VISTA: RESULTADOS DEL ANÁLISIS -->
+        <section id="view-results" class="view-section d-none">
+            <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-2">
+                <div>
+                    <h2 class="fw-bold m-0" id="results-title">Resultados del Análisis</h2>
+                    <span class="badge bg-primary mt-1" id="results-category">Categoría</span>
+                </div>
+                <!-- ACCIONES -->
+                <div class="d-flex gap-2 flex-wrap">
+                    <button class="btn btn-outline-secondary btn-sm" onclick="imprimirPantalla()"><i class="fa-solid fa-print me-1"></i> Imprimir</button>
+                    <button class="btn btn-outline-secondary btn-sm" onclick="exportarPDF()"><i class="fa-solid fa-file-pdf me-1"></i> Exportar PDF</button>
+                    <button class="btn btn-outline-secondary btn-sm" onclick="exportarExcel()"><i class="fa-solid fa-file-excel me-1"></i> Excel</button>
+                    <button class="btn btn-outline-secondary btn-sm" onclick="descargarJSON()"><i class="fa-solid fa-file-code me-1"></i> JSON</button>
+                    <button class="btn btn-primary btn-sm rounded-pill px-3" onclick="iniciarCalculoIA()"><i class="fa-solid fa-plus me-1"></i> Nuevo Cálculo</button>
+                </div>
+            </div>
+
+            <!-- CONTENEDOR VISTA INDIVIDUAL (UN SOLO PRODUCTO) -->
+            <div id="results-single-container">
+                <!-- KPIs PRINCIPALES (CARDS SAAS) -->
+                <div class="row g-3 mb-4">
+                    <!-- Costo Total -->
+                    <div class="col-md-4 col-sm-6">
+                        <div class="kpi-saas-card h-100">
+                            <div class="d-flex justify-content-between align-items-start">
+                                <span class="kpi-label">💰 Costo Total</span>
+                                <span class="badge bg-danger-subtle text-danger rounded-pill" style="font-size:0.7rem;">TOTAL</span>
+                            </div>
+                            <h3 class="kpi-val text-danger" id="kpi-costo-total">Bs. 0.00</h3>
+                            <span class="kpi-subtext" id="kpi-costo-desglose">Fijos: Bs. 0.00 | Var: Bs. 0.00</span>
+                            <p class="kpi-desc">Es todo el dinero que gastas para producir o entregar tu producto/servicio, incluyendo materiales, mano de obra y gastos fijos.</p>
+                        </div>
+                    </div>
+                    <!-- Precio Sugerido -->
+                    <div class="col-md-4 col-sm-6">
+                        <div class="kpi-saas-card h-100">
+                            <div class="d-flex justify-content-between align-items-start">
+                                <span class="kpi-label">🏷️ Precio Sugerido de Venta</span>
+                                <span class="badge bg-success-subtle text-success rounded-pill" style="font-size:0.7rem;">VENTA</span>
+                            </div>
+                            <h3 class="kpi-val text-success" id="kpi-precio-sugerido">Bs. 0.00</h3>
+                            <span class="kpi-subtext" id="kpi-margen-porcentaje">Margen: 0%</span>
+                            <p class="kpi-desc">El precio mínimo al que debes vender para cubrir todos tus costos y ganar la utilidad que deseas.</p>
+                        </div>
+                    </div>
+                    <!-- ROI -->
+                    <div class="col-md-4 col-sm-6">
+                        <div class="kpi-saas-card h-100">
+                            <div class="d-flex justify-content-between align-items-start">
+                                <span class="kpi-label">📈 Retorno de Inversión (ROI)</span>
+                                <span class="badge bg-primary-subtle text-primary rounded-pill" style="font-size:0.7rem;">ROI</span>
+                            </div>
+                            <h3 class="kpi-val text-primary" id="kpi-roi">0%</h3>
+                            <span class="kpi-subtext" id="kpi-ganancia-neta">Ganancia: Bs. 0.00</span>
+                            <p class="kpi-desc">Por cada Bs. que inviertes, ¿cuánto recuperas? Un ROI del 50% significa que ganas Bs. 0.50 por cada Bs. invertido.</p>
+                        </div>
+                    </div>
+                    <!-- Punto de Equilibrio -->
+                    <div class="col-md-4 col-sm-6">
+                        <div class="kpi-saas-card h-100">
+                            <div class="d-flex justify-content-between align-items-start">
+                                <span class="kpi-label">⚖️ Punto de Equilibrio</span>
+                                <span class="badge bg-warning-subtle text-warning rounded-pill" style="font-size:0.7rem;">BREAK EVEN</span>
+                            </div>
+                            <h3 class="kpi-val text-warning" id="kpi-pe-unidades">0 uds</h3>
+                            <span class="kpi-subtext" id="kpi-pe-ingresos">Ventas: Bs. 0.00</span>
+                            <p class="kpi-desc">Las unidades mínimas que debes vender para no perder ni ganar. A partir de ese número, cada venta es ganancia pura.</p>
+                        </div>
+                    </div>
+                    <!-- Costo Unitario -->
+                    <div class="col-md-4 col-sm-6">
+                        <div class="kpi-saas-card h-100">
+                            <div class="d-flex justify-content-between align-items-start">
+                                <span class="kpi-label">🔢 Costo por Unidad</span>
+                                <span class="badge bg-secondary-subtle text-secondary rounded-pill" style="font-size:0.7rem;">UNITARIO</span>
+                            </div>
+                            <h3 class="kpi-val" id="kpi-costo-unitario">Bs. 0.00</h3>
+                            <span class="kpi-subtext">Lo que te cuesta producir 1 unidad</span>
+                            <p class="kpi-desc">Cuánto te cuesta exactamente fabricar o entregar una sola unidad de tu producto, dividiendo todos los gastos entre las unidades estimadas.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- GRÁFICOS INTERACTIVOS INDIVIDUALES -->
+                <div class="row mb-4 g-4">
+                    <div class="col-md-6">
+                        <div class="graph-saas-card">
+                            <div class="d-flex justify-content-between align-items-center mb-3">
+                                <h6 class="fw-bold m-0"><i class="fa-solid fa-chart-pie text-primary me-2"></i>Distribución de Costos</h6>
+                                <button class="btn btn-sm btn-light" onclick="descargarGrafico('chart-distribucion')"><i class="fa-solid fa-download"></i></button>
+                            </div>
+                            <canvas id="chart-distribucion" style="max-height: 250px;"></canvas>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="graph-saas-card">
+                            <div class="d-flex justify-content-between align-items-center mb-3">
+                                <h6 class="fw-bold m-0"><i class="fa-solid fa-chart-simple text-success me-2"></i>Costos vs Utilidad</h6>
+                                <button class="btn btn-sm btn-light" onclick="descargarGrafico('chart-barras')"><i class="fa-solid fa-download"></i></button>
+                            </div>
+                            <canvas id="chart-barras" style="max-height: 250px;"></canvas>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="graph-saas-card">
+                            <div class="d-flex justify-content-between align-items-center mb-3">
+                                <h6 class="fw-bold m-0"><i class="fa-solid fa-chart-line text-warning me-2"></i>Curva del Punto de Equilibrio</h6>
+                                <button class="btn btn-sm btn-light" onclick="descargarGrafico('chart-lineas')"><i class="fa-solid fa-download"></i></button>
+                            </div>
+                            <canvas id="chart-lineas" style="max-height: 250px;"></canvas>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="graph-saas-card">
+                            <div class="d-flex justify-content-between align-items-center mb-3">
+                                <h6 class="fw-bold m-0"><i class="fa-solid fa-scale-balanced text-info me-2"></i>Comparativo Financiero</h6>
+                                <button class="btn btn-sm btn-light" onclick="descargarGrafico('chart-comparativo')"><i class="fa-solid fa-download"></i></button>
+                            </div>
+                            <canvas id="chart-comparativo" style="max-height: 250px;"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- CONTENEDOR VISTA MULTI-PRODUCTO (COMPARATIVA Y ACORDEÓN) -->
+            <div id="results-multi-container" class="d-none">
+                <!-- Tabla Comparativa -->
+                <div class="row mb-4">
+                    <div class="col-12" id="multi-table-wrapper">
+                        <!-- Se inyecta la tabla comparativa mediante JS -->
+                    </div>
+                </div>
+
+                <!-- Gráficos Comparativos -->
+                <div class="row mb-4 g-4" id="multi-charts-wrapper">
+                    <!-- Se inyectan gráficos comparativos mediante JS -->
+                </div>
+
+                <!-- Acordeón para Detalles Individuales por Producto -->
+                <div class="row mb-4">
+                    <div class="col-12">
+                        <h6 class="fw-bold mb-3"><i class="fa-solid fa-circle-info text-primary me-2"></i>Detalle Individual de cada Producto</h6>
+                        <div class="accordion" id="accordionDetallesProductos">
+                            <!-- Se inyectan los acordeones de cada producto mediante JS -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- RECOMENDACIONES DE GEMINI -->
+            <div class="row">
+                <div class="col-12">
+                    <div class="recommendation-saas-card p-4">
+                        <h5 class="fw-bold mb-3"><i class="fa-solid fa-sparkles text-primary me-2 animate-pulse"></i>Recomendaciones Financieras de Gemini</h5>
+                        <div id="results-recommendations" class="recommendation-content">
+                            <!-- Se inyectan las viñetas aquí -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 4. VISTA: DASHBOARD GENERAL -->
+        <section id="view-dashboard" class="view-section d-none">
+            <h2 class="fw-bold mb-4">Dashboard Estadístico General</h2>
+            
+            <div class="row g-3 mb-4">
+                <div class="col-md-4">
+                    <div class="kpi-saas-card">
+                        <span class="kpi-label">Cantidad de Cálculos Realizados</span>
+                        <h3 class="kpi-val" id="db-total-calculos">0</h3>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="kpi-saas-card">
+                        <span class="kpi-label">Ganancia Promedio Estimada</span>
+                        <h3 class="kpi-val text-success" id="db-avg-ganancia">Bs. 0.00</h3>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="kpi-saas-card">
+                        <span class="kpi-label">Costo Promedio Estimado</span>
+                        <h3 class="kpi-val text-danger" id="db-avg-costo">Bs. 0.00</h3>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-6 mb-4">
+                    <div class="custom-card h-100">
+                        <h6 class="fw-bold mb-3"><i class="fa-solid fa-trophy text-warning me-2"></i>Productos/Servicios Más Rentables (Mayor ROI)</h6>
+                        <ul id="db-ranking-list" class="list-group list-group-flush">
+                            <!-- Cargado vía AJAX -->
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-md-6 mb-4">
+                    <div class="custom-card h-100">
+                        <h6 class="fw-bold mb-3"><i class="fa-solid fa-clock-rotate-left text-muted me-2"></i>Últimos Cálculos Realizados</h6>
+                        <ul id="db-recent-list" class="list-group list-group-flush">
+                            <!-- Cargado vía AJAX -->
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 5. VISTA: HISTORIAL COMPLETO -->
+        <section id="view-history" class="view-section d-none">
+            <h2 class="fw-bold mb-4">Historial de Análisis Guardados</h2>
+            
+            <!-- Buscador y Filtros -->
+            <div class="row g-2 mb-3">
+                <div class="col-md-5">
+                    <div class="input-group">
+                        <span class="input-group-text bg-transparent border-end-0 text-muted"><i class="fa-solid fa-magnifying-glass"></i></span>
+                        <input type="text" id="history-search" class="form-control border-start-0" placeholder="Buscar por nombre de producto/proyecto..." oninput="filtrarHistorial()">
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <select id="history-filter-category" class="form-select" onchange="filtrarHistorial()">
+                        <option value="">Todas las Categorías</option>
+                        <option value="Producto">Costo de Producto</option>
+                        <option value="Servicio">Costo de Servicio</option>
+                        <option value="Construcción">Construcción</option>
+                        <option value="Carpintería">Carpintería</option>
+                        <option value="Restaurante">Restaurante</option>
+                        <option value="Fabricación">Fabricación</option>
+                        <option value="Otro">Otros</option>
+                    </select>
+                </div>
+                <div class="col-md-4">
+                    <select id="history-sort" class="form-select" onchange="filtrarHistorial()">
+                        <option value="reciente">Más Recientes Primero</option>
+                        <option value="antiguo">Más Antiguos Primero</option>
+                        <option value="costo-alto">Costo: Alto a Bajo</option>
+                        <option value="costo-bajo">Costo: Bajo a Alto</option>
+                        <option value="roi-alto">Rentabilidad (ROI): Mayor a Menor</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Tabla de Historial -->
+            <div class="custom-card p-0" style="overflow-x: auto;">
+                <table class="table table-hover align-middle mb-0" style="min-width: 800px;">
+                    <thead class="table-light">
+                        <tr>
+                            <th class="ps-4">Nombre / Proyecto</th>
+                            <th>Categoría</th>
+                            <th>Costo Total</th>
+                            <th>Precio Sugerido</th>
+                            <th>ROI</th>
+                            <th>Punto Equilibrio</th>
+                            <th>Fecha</th>
+                            <th class="pe-4 text-end">Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody id="history-table-body">
+                        <!-- Cargado vía AJAX -->
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="saas-footer border-top py-4 text-center mt-5">
+        <div class="container text-muted small">
+            &copy; 2026 ControlCostos AI. Todos los derechos reservados.
+        </div>
+    </footer>
+
+    <!-- Custom Script -->
+    <script src="js/app.js?v=28"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

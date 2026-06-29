@@ -1,0 +1,405 @@
+/* SYSTEM VARIABLES - SaaS / Stripe / Linear Style */
+:root {
+    --bg-color: #f8fafc;
+    --card-bg: #ffffff;
+    --text-main: #0f172a;
+    --text-muted: #64748b;
+    --border-color: #e2e8f0;
+    --primary-color: #4f46e5;
+    --primary-hover: #4338ca;
+    --header-bg: #0f172a;
+    --header-text: #ffffff;
+    --kpi-bg: #f8fafc;
+    --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -2px rgba(0, 0, 0, 0.05);
+    --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.05), 0 4px 6px -4px rgba(0, 0, 0, 0.05);
+}
+
+[data-theme="dark"] {
+    --bg-color: #0b0f19;
+    --card-bg: #111827;
+    --text-main: #f3f4f6;
+    --text-muted: #9ca3af;
+    --border-color: #1f2937;
+    --primary-color: #6366f1;
+    --primary-hover: #4f46e5;
+    --header-bg: #111827;
+    --header-text: #f3f4f6;
+    --kpi-bg: #1f2937;
+    --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.2);
+    --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.3);
+}
+
+[data-theme="dark"] .text-muted {
+    color: var(--text-muted) !important;
+}
+
+body {
+    background-color: var(--bg-color);
+    color: var(--text-main);
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    transition: background-color 0.3s ease, color 0.3s ease;
+    min-height: 100vh;
+}
+
+/* Header & Nav */
+.saas-header {
+    background-color: var(--header-bg);
+    color: var(--header-text);
+}
+
+.logo-text {
+    color: var(--header-text);
+}
+
+.nav-link-custom {
+    background: transparent;
+    border: none;
+    color: var(--text-muted);
+    font-size: 0.95rem;
+    font-weight: 500;
+    padding: 8px 16px;
+    border-radius: 20px;
+    transition: all 0.2s ease;
+}
+
+.nav-link-custom:hover, .nav-link-custom.active {
+    color: var(--primary-color);
+    background-color: rgba(79, 70, 229, 0.1);
+}
+
+[data-theme="dark"] .nav-link-custom:hover, 
+[data-theme="dark"] .nav-link-custom.active {
+    color: var(--primary-color);
+    background-color: rgba(99, 102, 241, 0.15);
+}
+
+.btn-theme-toggle {
+    background: transparent;
+    border: 1px solid var(--border-color);
+    color: var(--text-muted);
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease;
+}
+
+.btn-theme-toggle:hover {
+    color: var(--text-main);
+    border-color: var(--text-muted);
+}
+
+/* SaaS Cards */
+.custom-card {
+    background-color: var(--card-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 16px;
+    padding: 24px;
+    box-shadow: var(--shadow);
+    margin-bottom: 24px;
+}
+
+/* Estilos de Bienvenida Llamativos (Premium SaaS) */
+.welcome-hero-glow {
+    position: relative;
+    background: radial-gradient(circle at 50% 30%, rgba(79, 70, 229, 0.08) 0%, transparent 60%);
+    border-radius: 24px;
+    padding: 3rem 1.5rem;
+}
+
+.card-beneficio-premium {
+    background: var(--card-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 20px;
+    padding: 24px;
+    box-shadow: var(--shadow);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.card-beneficio-premium:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 20px 30px -10px rgba(79, 70, 229, 0.15);
+    border-color: var(--primary-color);
+}
+
+.card-beneficio-premium h6 {
+    color: var(--text-main);
+    font-size: 1.05rem;
+    font-weight: 600;
+    margin-bottom: 8px;
+}
+
+.card-beneficio-premium p, 
+.card-beneficio-premium .text-muted {
+    color: var(--text-muted) !important;
+    font-size: 0.85rem;
+    line-height: 1.6;
+}
+
+.card-beneficio-premium .icon-wrapper {
+    width: 48px;
+    height: 48px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 20px;
+    font-size: 1.3rem;
+    transition: transform 0.3s ease;
+}
+
+.card-beneficio-premium:hover .icon-wrapper {
+    transform: scale(1.1) rotate(5deg);
+}
+
+/* Badges de Pasos */
+.step-card-premium {
+    background: var(--card-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 18px;
+    padding: 20px;
+    box-shadow: var(--shadow);
+    transition: all 0.3s ease;
+}
+
+.step-card-premium:hover {
+    border-color: var(--primary-color);
+    transform: scale(1.02);
+}
+
+.step-card-premium h6 {
+    color: var(--text-main);
+    font-weight: 600;
+}
+
+.step-card-premium p,
+.step-card-premium .text-muted {
+    color: var(--text-muted) !important;
+}
+
+.badge-paso-premium {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--primary-color), var(--primary-hover));
+    color: #ffffff;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 10px rgba(79, 70, 229, 0.3);
+}
+
+/* Chat SaaS styling */
+.chat-saas-card {
+    background-color: var(--card-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 20px;
+    box-shadow: var(--shadow-lg);
+    overflow: hidden;
+}
+
+.chat-header-bar {
+    background-color: var(--card-bg);
+    border-bottom: 1px solid var(--border-color);
+}
+
+.chat-message-box {
+    height: 500px;
+    overflow-y: auto;
+    background-color: var(--bg-color);
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+/* Messages bubbles */
+.chatbot-message {
+    max-width: 75%;
+    padding: 12px 18px;
+    border-radius: 18px;
+    font-size: 0.95rem;
+    line-height: 1.5;
+    animation: slideInBubble 0.25s ease-out;
+}
+
+@keyframes slideInBubble {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.chatbot-message.user {
+    background-color: var(--primary-color);
+    color: white;
+    align-self: flex-end;
+    border-bottom-right-radius: 4px;
+    box-shadow: 0 4px 10px rgba(79, 70, 229, 0.2);
+}
+
+.chatbot-message.bot {
+    background-color: var(--card-bg);
+    color: var(--text-main);
+    align-self: flex-start;
+    border-bottom-left-radius: 4px;
+    border: 1px solid var(--border-color);
+    box-shadow: var(--shadow);
+}
+
+.pulse-indicator {
+    display: inline-block;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    animation: indicatorPulse 2s infinite;
+}
+
+@keyframes indicatorPulse {
+    0% { transform: scale(1); opacity: 1; }
+    50% { transform: scale(1.5); opacity: 0.5; }
+    100% { transform: scale(1); opacity: 1; }
+}
+
+/* Option Buttons */
+.quick-opt-btn {
+    border: 1px solid var(--primary-color);
+    background-color: transparent;
+    color: var(--primary-color);
+    border-radius: 20px;
+    padding: 6px 16px;
+    font-size: 0.85rem;
+    font-weight: 500;
+    transition: all 0.2s ease;
+}
+
+.quick-opt-btn:hover {
+    background-color: var(--primary-color);
+    color: white;
+}
+
+/* KPI Cards */
+.kpi-saas-card {
+    background-color: var(--card-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    padding: 20px;
+    box-shadow: var(--shadow);
+    transition: transform 0.2s ease;
+}
+
+.kpi-saas-card:hover {
+    transform: translateY(-2px);
+}
+
+.kpi-label {
+    font-size: 0.8rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    display: block;
+    margin-bottom: 6px;
+}
+
+.kpi-val {
+    font-size: 1.8rem;
+    font-weight: 700;
+    margin: 0 0 6px 0;
+}
+
+.kpi-subtext {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+}
+
+.kpi-desc {
+    font-size: 0.76rem;
+    color: var(--text-muted);
+    margin-top: 10px;
+    padding-top: 10px;
+    border-top: 1px solid var(--border-color);
+    margin-bottom: 0;
+    line-height: 1.5;
+    font-style: italic;
+}
+
+/* Graph container */
+.graph-saas-card {
+    background-color: var(--card-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 14px;
+    padding: 20px;
+    box-shadow: var(--shadow);
+}
+
+/* Recommendation card */
+.recommendation-saas-card {
+    background-color: var(--card-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 14px;
+    box-shadow: var(--shadow);
+}
+
+.recommendation-content {
+    font-size: 0.95rem;
+    line-height: 1.6;
+}
+
+/* Table */
+.table {
+    color: var(--text-main);
+}
+
+.table th {
+    font-weight: 600;
+    color: var(--text-muted);
+    font-size: 0.85rem;
+    text-transform: uppercase;
+}
+
+.table td {
+    font-size: 0.9rem;
+}
+
+/* Pulse animation */
+.animate-pulse {
+    animation: btnPulse 2s infinite;
+}
+
+@keyframes btnPulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.04); }
+    100% { transform: scale(1); }
+}
+
+/* Print Layout */
+@media print {
+    body {
+        background-color: white !important;
+        color: black !important;
+    }
+    .saas-header, .saas-footer, .btn, nav, .chat-saas-card, #view-welcome, #view-chat, #view-dashboard, #view-history, .d-flex.gap-2 {
+        display: none !important;
+    }
+    #view-results {
+        display: block !important;
+        width: 100% !important;
+        margin: 0 !important;
+        padding: 0 !important;
+    }
+    .kpi-saas-card {
+        border: 1px solid #ccc !important;
+        box-shadow: none !important;
+        break-inside: avoid;
+    }
+    .graph-saas-card {
+        border: 1px solid #ccc !important;
+        box-shadow: none !important;
+        break-inside: avoid;
+    }
+}
