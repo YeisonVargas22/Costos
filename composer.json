@@ -1,0 +1,7 @@
+{
+    "name": "yeisonvargas/costos-system",
+    "description": "Sistema de Costos y Presupuestos",
+    "require": {
+        "php": ">=7.4"
+    }
+}
