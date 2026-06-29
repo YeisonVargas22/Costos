@@ -1,16 +1,13 @@
-FROM php:8.1-apache
+FROM php:8.1-cli
 
-# Habilitar el módulo rewrite de Apache
-RUN a2enmod rewrite
+# Instalar extensiones necesarias para MySQL PDO
+RUN apt-get update && apt-get install -y \
+    libpq-dev \
+    && docker-php-ext-install pdo pdo_mysql
 
-# Instalar la extensión PDO MySQL requerida para la base de datos
-RUN docker-php-ext-install pdo pdo_mysql
+# Copiar el código del proyecto
+COPY . /app
+WORKDIR /app
 
-# Copiar los archivos del proyecto al directorio web de Apache
-COPY . /var/www/html/
-
-# Dar permisos correctos a los archivos
-RUN chown -R www-data:www-data /var/www/html
-
-# Exponer el puerto 80 (Railway redirigirá el tráfico aquí automáticamente)
-EXPOSE 80
+# Iniciar el servidor de desarrollo integrado de PHP en el puerto que asigne Railway
+CMD php -S 0.0.0.0:${PORT:-8080}
